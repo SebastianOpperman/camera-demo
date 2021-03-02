@@ -1,7 +1,7 @@
 export default function Home() {
 	return (
 		<main>
-			This works!
+			This is how fast
 		</main>
 	)
 }
