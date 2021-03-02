@@ -1,7 +1,12 @@
 export default function Home() {
+
+	function stream() {
+		console.log(navigator)
+	}
+
 	return (
 		<main>
-			This is how fast
+			<button onClick={() => stream()}>Start Stream</button>
 		</main>
 	)
 }
