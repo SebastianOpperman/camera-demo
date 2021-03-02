@@ -1,30 +1,28 @@
 import React, {useRef, useEffect, useState} from 'react'
+import useUserMedia from '../components/userMedia'
 
 export default function Home() {
 
-	const [stream, setStream] = useState(null)
-	const player = useRef(null)
+	const CAPTURE_OPTIONS = {
+    audio: false,
+    video: { facingMode: "environment" },
+};
 
-	async function stream() {
-		setStream(await navigator.mediaDevices.getUserMedia({
-			video: {
-				minAspectRatio: 1.333,
-				minFrameRate: 60,
-				width: 640,
-				heigth: 480
-			},
-			audio: true
-		}))
-	}
+	const videoRef = useRef();
+  const mediaStream = useUserMedia(CAPTURE_OPTIONS);
 
-	useEffect(() => {
-		player.src = stream
-	}, [player, stream])
+  if (mediaStream && videoRef.current && !videoRef.current.srcObject) {
+    videoRef.current.srcObject = mediaStream;
+		console.log(mediaStream);
+  }
+
+  function handleCanPlay() {
+    videoRef.current.play();
+  }
 
 	return (
 		<main>
-			<button onClick={() => stream()}>Start Stream</button>
-			<video autoplay ref={player}></video>
+			<video ref={videoRef} onCanPlay={handleCanPlay} autoPlay playsInline muted />
 		</main>
 	)
 }
