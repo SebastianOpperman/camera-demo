@@ -1,28 +1,27 @@
-import React, {useRef, useEffect, useState} from 'react'
-import useUserMedia from '../components/userMedia'
+import React, {useRef, useEffect} from 'react'
 
-export default function Home() {
+const Home = () => {
 
-	const CAPTURE_OPTIONS = {
-    audio: false,
-    video: { facingMode: "environment" },
-};
+	const screenPlayer = useRef(null),
+				cameraPlayer = useRef(null)
 
-	const videoRef = useRef();
-  const mediaStream = useUserMedia(CAPTURE_OPTIONS);
-
-  if (mediaStream && videoRef.current && !videoRef.current.srcObject) {
-    videoRef.current.srcObject = mediaStream;
-		console.log(mediaStream);
-  }
-
-  function handleCanPlay() {
-    videoRef.current.play();
-  }
+	useEffect(async () => {
+		const stream = await navigator.mediaDevices.getDisplayMedia({
+			video: { mediaSource: 'screen' }
+		});
+		const selfie = await navigator.mediaDevices.getDisplayMedia({
+			video: { mediaSource: 'enviroment' }
+		});
+		screenPlayer.current.srcObject = stream
+		cameraPlayer.current.srcObject = selfie
+	}, [screenPlayer, cameraPlayer])
 
 	return (
-		<main>
-			<video ref={videoRef} onCanPlay={handleCanPlay} autoPlay playsInline muted />
-		</main>
+		<>
+			<video playsInline muted autoPlay ref={screenPlayer} />
+			<video playsInline muted autoPlay ref={cameraPlayer} />
+		</>
 	)
 }
+
+export default Home
