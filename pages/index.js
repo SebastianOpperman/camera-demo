@@ -7,10 +7,10 @@ const Home = () => {
 
 	useEffect(async () => {
 		const stream = await navigator.mediaDevices.getDisplayMedia({
-			video: { mediaSource: 'screen' }
+			video: { mediaSource: 'user' }
 		});
-		const selfie = await navigator.mediaDevices.getDisplayMedia({
-			video: { mediaSource: 'enviroment' }
+		const selfie = await navigator.mediaDevices.getUserMedia({
+			video: { mediaSource: 'user' }
 		});
 		screenPlayer.current.srcObject = stream
 		cameraPlayer.current.srcObject = selfie
